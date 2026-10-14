@@ -25,7 +25,7 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Generate Android Skeleton and Build APK
+      - name: Generate Android Skeleton with Permissions and Build APK
         run: |
           mkdir -p temp_app
           cd temp_app
@@ -33,6 +33,10 @@ jobs:
           cp -r android ../
           cd ..
           rm -rf temp_app
+          
+          # Internet aur Audio permissions add karna
+          sed -i '/<application/i <uses-permission android:name="android.permission.INTERNET"\/>\n<uses-permission android:name="android.permission.RECORD_AUDIO"\/>' android/app/src/main/AndroidManifest.xml
+          
           flutter pub get
           flutter build apk --release
 
